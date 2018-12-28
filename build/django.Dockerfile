@@ -9,7 +9,7 @@ WORKDIR /app
 
 # Install dependencies
 RUN pip install pipenv
-COPY ./backend/* ./
+COPY ./backend/ ./
 RUN pipenv install --system
 
 # Configure port

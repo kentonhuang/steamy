@@ -28,7 +28,7 @@ SECRET_KEY = os.getenv('DJANGO_SECRET', 'Remember-To-Change-Me!!!23@#$@#$@')
 DEBUG = False
 
 ALLOWED_HOSTS = [
-    'localhost',
+    '*',
 ]
 
 
@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'api',
+    'rest_framework'
 ]
 
 MIDDLEWARE = [
