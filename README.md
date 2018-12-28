@@ -1,8 +1,6 @@
-## Docker Compose with Django example
+## steamy
 
-This project gives an example of how to set up Django with multiple configuration files and deploy it via Docker containers using Docker Compose.
-
-The Git commits are organized in a way to isolate each step to gain visibility on what's being done.
+Cool Steam Stuff
 
 ## Requirements
 
@@ -44,7 +42,3 @@ To build images and deploy containers:
   3. Verify containers are running:
 
       ```docker ps```
-
-## Author's Notes
-
-This is a learning process for me as well. If there is anything that is lacking or unclear please let me know and I will address them.
