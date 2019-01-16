@@ -31,3 +31,26 @@ services:
     ports:
       - '3000:3000'
     restart: always
+  redis:
+    image: "redis:alpine"
+    ports:
+      - '6379:6379'
+  celery:
+    build: 
+      context: ..
+      dockerfile: ./build/django.Dockerfile
+      args:
+        - DJANGO_ENV=development
+    command: celery -A example worker -l info
+    depends_on:
+      - app
+  celery-beat:
+    build:
+      context: ..
+      dockerfile: ./build/django.Dockerfile
+      args:
+        - DJANGO_ENV=development
+    command: celery -A example beat -l info
+    depends_on :
+      - app
+

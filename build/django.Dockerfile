@@ -1,4 +1,4 @@
-FROM python:3.7.1
+FROM python:3.6.7
 
 # Read argument passed in from docker compose
 ARG DJANGO_ENV
