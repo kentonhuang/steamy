@@ -134,8 +134,8 @@ CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 
 CELERY_BEAT_SCHEDULE = {
-    'hello': {
-        'task': 'example.tasks.hello',
-        'schedule': crontab()
+    'get_games': {
+        'task': 'example.tasks.get_game_info',
+        'schedule': crontab(minute='*/10')
     }
 }
