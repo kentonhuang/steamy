@@ -7,3 +7,7 @@ from rest_framework import generics
 class GameListCreate(generics.ListCreateAPIView):
     queryset = Game.objects.all()
     serializer_class = GameSerializer
+
+class DetailGame(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Game.objects.all()
+    serializer_class = GameSerializer
