@@ -12,6 +12,7 @@ psycopg2 = "*"
 celery = "*"
 redis = "*"
 requests = "*"
+django-cors-headers = "*"
 
 [requires]
 python_version = "3.6.7"

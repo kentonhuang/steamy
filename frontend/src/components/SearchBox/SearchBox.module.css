@@ -1,0 +1,15 @@
+.SearchBox {
+    grid-column: 3 / 11;
+    grid-row: 2 / 5;
+
+    display: flex;
+    justify-content: center;
+
+    width: 100%;
+    height: 100%;
+    background-color: #CAC3FC;
+    border-radius: 3px;
+    border: 1px solid #CAC3FC;
+    box-shadow: 6px 6px 8px #A196F6;
+    padding: 10px;
+}
