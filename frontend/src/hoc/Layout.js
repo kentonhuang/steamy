@@ -14,7 +14,7 @@ class Layout extends Component {
     }
 
     updateProfile = (id) => {
-        let url = 'http://0.0.0.0:8000/api/steamuser/' + id
+        let url = 'http://localhost:8000/api/steamuser/' + id
         axios.get(url)
             .then(res => {
                 const profile = res.data;
@@ -30,10 +30,15 @@ class Layout extends Component {
   render() {
       console.log(this.state.profile);
     return (
+      <React.Fragment>
         <main className={classes.Wrapper}>
             <Route path="/" exact component={() => <SearchPage updateProfile={this.updateProfile} />} />
             <Route path="/profile/:id" component={() => <ProfilePage />} />
         </main>
+        <footer style={{"height": "300px"}}>
+          HELLO
+        </footer>
+      </React.Fragment>
     )
   }
 }

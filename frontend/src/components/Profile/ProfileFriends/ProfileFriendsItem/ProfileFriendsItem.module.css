@@ -1,0 +1,42 @@
+.ProfileFriendsItem {
+  display: flex;
+  height: 7rem;
+  background-color: #B5ACF9;
+  margin-bottom: 4px;
+  border-radius: 4px;
+  margin-right: 5px; 
+}
+
+.ProfileFriendsItem > img {
+  flex-grow: 0;
+  width: 56px;
+  height: 56px;
+  border-radius: 5px;
+  border: 2px solid #7E6FEE;
+  align-self: center;
+  margin-left: 8px;
+  object-fit: cover;
+}
+
+.ProfileFriendsItem > div {
+  display: flex;
+  flex-direction: column;
+  margin-top: 5px;
+  margin-left: 5px;
+  overflow: hidden;
+}
+
+.Name {
+  font-size: 1.8rem;
+  white-space: nowrap;
+}
+
+.OnlineStatus {
+  display: block;
+}
+
+@-moz-document url-prefix() {
+  .ProfileFriendsItem {
+    margin-right: 0;
+  }
+}

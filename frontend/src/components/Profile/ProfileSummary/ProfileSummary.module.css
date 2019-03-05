@@ -1,5 +1,5 @@
 .ProfileSummary {
-    grid-row: 2 /4;
+    grid-row: 2 / 4;
     grid-column: 3 / 11;
 
     display: grid;
@@ -30,4 +30,37 @@
 .ProfilePicture img {
     width: 100%;
     height: 100%;
+}
+
+.ProfileNameSection {
+  grid-row: 1 / 2;
+  grid-column: 2 / 4;
+  width: 100%;
+  height: 100%;
+  padding-left: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.ProfileName {
+  font-size: 3rem;
+}
+
+.ProfileLevel {
+  grid-row: 1 / 3;
+  grid-column: 5 / 8;
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.ProfileBadges {
+  width: 80%;
+  height: 90%;
+  background-color: #B5ACF9;
+  border-radius: 4px;
+  padding: 1rem;
 }

@@ -45,7 +45,7 @@ class SteamProfileDetail(generics.RetrieveUpdateDestroyAPIView):
                 return Response(content, status=status.HTTP_404_NOT_FOUND)
             elif r.status_code == 429:
                 content = {'error': 'Limit reached'}
-                return Response(content, status=HTTP_429_TOO_MANY_REQUESTS)
+                return Response(content, status=status.HTTP_429_TOO_MANY_REQUESTS)
             else:
                 keys = {
                     'id64': user[0]['steamid'],
@@ -106,3 +106,13 @@ class SteamProfileDetail(generics.RetrieveUpdateDestroyAPIView):
 class TestList(generics.ListCreateAPIView):
     queryset = TestModel.objects.all()
     serializer_class = TestSerializer
+
+class GetFriends(generics.RetrieveAPIView):
+  queryset = SteamProfile.objects.all()
+  serializer_class = SteamProfileSerializer
+  def get(self, request, pk, *args, **kwargs):
+    if SteamProfile.objects.filter(pk=self.kwargs.get('pk')).exists():
+      profile = SteamProfile.objects.get(pk=self.kwargs.get('pk'))
+      friends = profile['friends']
+      serializer = SteamProfileSerializer(friends)
+      return Response(serializer.data)

@@ -20,8 +20,8 @@ def get_game_info():
         if Game.objects.filter(pk=id).exists():
             logger.info(str(id) + 'exists')
             datastore['applist']['apps'].pop()
-            with open("game.json", 'w') as g:
-                json.dump(datastore, g, ensure_ascii=False)
+            # with open("game.json", 'w') as g:
+            #     json.dump(datastore, g, ensure_ascii=False)
             continue
         r = requests.get('http://store.steampowered.com/api/appdetails?appids=' + str(id))
         if(r.status_code == 200):
@@ -55,10 +55,12 @@ def get_game_info():
                 new_game = Game.objects.create(**keys)
                 logger.info('Created new Game in db!' + str(id))
             datastore['applist']['apps'].pop()
-            with open("game.json", 'w') as g:
-                json.dump(datastore, g, ensure_ascii=False)
+            # with open("game.json", 'w') as g:
+            #     json.dump(datastore, g, ensure_ascii=False)
         if(r.status_code == 429):
             logger.info('Breaking Limit Reached')
+            with open("game.json", 'w') as g:
+                json.dump(datastore, g, ensure_ascii=False)
             break
 
     
