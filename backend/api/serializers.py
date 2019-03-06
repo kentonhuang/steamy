@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from api.models import Game, SteamProfile, TestModel
+from api.models import Game, SteamProfile, TestModel, ShortProfile
 
 class GameSerializer(serializers.ModelSerializer):
     class Meta:
@@ -14,4 +14,9 @@ class SteamProfileSerializer(serializers.ModelSerializer):
 class TestSerializer(serializers.ModelSerializer):
     class Meta:
         model = TestModel
+        fields = '__all__'
+
+class ShortProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ShortProfile
         fields = '__all__'

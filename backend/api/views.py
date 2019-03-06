@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from api.models import Game, SteamProfile, TestModel
-from api.serializers import GameSerializer, SteamProfileSerializer, TestSerializer
+from api.models import Game, SteamProfile, TestModel, ShortProfile
+from api.serializers import GameSerializer, SteamProfileSerializer, TestSerializer, ShortProfileSerializer
 from rest_framework import generics, status
 from rest_framework.response import Response
 
@@ -100,9 +100,6 @@ class SteamProfileDetail(generics.RetrieveUpdateDestroyAPIView):
                 serializer = SteamProfileSerializer(new_user)
                 return Response(serializer.data)
 
-            # data['response']['players'].append(pk)
-            # data['response']['players'].append(self.kwargs['pk'])
-
 class TestList(generics.ListCreateAPIView):
     queryset = TestModel.objects.all()
     serializer_class = TestSerializer
@@ -113,6 +110,24 @@ class GetFriends(generics.RetrieveAPIView):
   def get(self, request, pk, *args, **kwargs):
     if SteamProfile.objects.filter(pk=self.kwargs.get('pk')).exists():
       profile = SteamProfile.objects.get(pk=self.kwargs.get('pk'))
-      friends = profile['friends']
-      serializer = SteamProfileSerializer(friends)
-      return Response(serializer.data)
+      friends = profile.friends['friends']
+      string = ''
+      url = 'http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=8BED1F5C904666F005800A4B9A5A1162&steamids='
+      count = len(friends)
+      combined_friends = []
+      while count > 0:
+        url = 'http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=8BED1F5C904666F005800A4B9A5A1162&steamids='
+        for friend in reversed(friends):
+          string = string + friend['steamid'] + ','
+          friends.pop()
+          count -= 1
+        completeurl = url + string
+        r = requests.get(completeurl)
+        data = r.json()
+        for friend in data['response']['players']:
+          combined_friends.append(friend)
+      return Response(combined_friends)
+
+class ShortProfile(generics.RetrieveUpdateDestroyAPIView):
+    queryset = ShortProfile.objects.all()
+    serializer_class = ShortProfileSerializer

@@ -54,4 +54,18 @@ class SteamProfile(models.Model):
 class TestModel(models.Model):
     name=models.CharField(max_length=500, blank=True)
 
-
+class ShortProfile(models.Model):
+  id64 = models.BigIntegerField(primary_key=True)
+  visibility = models.IntegerField(blank=True, null=True)
+  profile_state = models.IntegerField(blank=True, null=True)
+  name = models.CharField(max_length=500, blank=True)
+  real_name = models.CharField(max_length=500, blank=True)
+  primary_clan = models.BigIntegerField(blank=True, null=True)
+  loc_country = models.CharField(max_length=10, blank=True, null=True)
+  loc_state = models.CharField(max_length=10, blank=True, null=True)
+  loc_city = models.IntegerField(blank=True, null=True)
+  in_game = models.IntegerField(blank=True, null=True)
+  in_game_name = models.CharField(max_length=500, blank=True,)
+  last_online = models.IntegerField(blank=True, null=True)
+  time_created = models.IntegerField(blank=True, null=True)
+  last_updated = models.DateTimeField(auto_now_add=True)
