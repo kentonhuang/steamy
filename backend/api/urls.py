@@ -8,5 +8,5 @@ urlpatterns = [
     path('api/steamuser/<int:pk>', views.SteamProfileDetail.as_view()),
     path('api/testmodel/', views.TestList.as_view()),
     path('api/friends/<int:pk>', views.GetFriends.as_view()),
-    path('api/shortprofile/', views.ShortProfile.as_view()),
+    path('api/shortprofile/', views.ShortProfiles.as_view()),
 ]

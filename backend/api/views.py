@@ -28,7 +28,7 @@ class SteamProfileDetail(generics.RetrieveUpdateDestroyAPIView):
         if SteamProfile.objects.filter(pk=self.kwargs.get('pk')).exists():
             profile = SteamProfile.objects.get(pk=self.kwargs.get('pk'))
             serializer = SteamProfileSerializer(profile)
-            return Response(serializer.data)
+            return Response(serializer.data, status=status.HTTP_200_OK)
         else:
             pkstr = str(pk)
             url_summary = 'http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=8BED1F5C904666F005800A4B9A5A1162&steamids=' + pkstr
@@ -98,7 +98,7 @@ class SteamProfileDetail(generics.RetrieveUpdateDestroyAPIView):
                         keys['recent_games'] = d_recent_games['response']
                 new_user = SteamProfile.objects.create(**keys)
                 serializer = SteamProfileSerializer(new_user)
-                return Response(serializer.data)
+                return Response(serializer.data, status=status.HTTP_200_OK)
 
 class TestList(generics.ListCreateAPIView):
     queryset = TestModel.objects.all()
@@ -110,24 +110,71 @@ class GetFriends(generics.RetrieveAPIView):
   def get(self, request, pk, *args, **kwargs):
     if SteamProfile.objects.filter(pk=self.kwargs.get('pk')).exists():
       profile = SteamProfile.objects.get(pk=self.kwargs.get('pk'))
-      friends = profile.friends['friends']
-      string = ''
-      url = 'http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=8BED1F5C904666F005800A4B9A5A1162&steamids='
-      count = len(friends)
-      combined_friends = []
+      friends = profile.friends['friends'].copy()
+      complete_friends = []
+      nodata_friends = []
+      for friend1 in reversed(friends):
+        if ShortProfile.objects.filter(pk=friend1['steamid']).exists():
+          short_prof = ShortProfile.objects.get(pk=friend1['steamid'])
+          complete_friends.append(short_prof)
+        else:
+          nodata_friends.append(friend1)
+      count = len(nodata_friends)
       while count > 0:
+        combined_friends = []
+        string = ''
+        limit = 100;
         url = 'http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=8BED1F5C904666F005800A4B9A5A1162&steamids='
-        for friend in reversed(friends):
-          string = string + friend['steamid'] + ','
-          friends.pop()
-          count -= 1
+        for friend2 in nodata_friends:
+          string = string + friend2['steamid'] + ','
+          limit = limit - 1
+          count = count - 1
+          if limit == 0:
+            break
         completeurl = url + string
+        nodata_friends = nodata_friends[100:]
         r = requests.get(completeurl)
         data = r.json()
-        for friend in data['response']['players']:
-          combined_friends.append(friend)
-      return Response(combined_friends)
+        for friend3 in data['response']['players']:
+          combined_friends.append(friend3)
+        for friend4 in combined_friends:
+          new_prof = {
+            'id64': friend4['steamid'],
+            'steam_url': friend4['profileurl'],
+            'name': friend4['personaname'],
+            'avatar': friend4['avatar'],
+            'avatar_med': friend4['avatarmedium'],
+            'avatar_full': friend4['avatarfull'],
+            'status': friend4['personastate'],
+            'visibility': friend4['communityvisibilitystate']
+          }
+          if 'lastlogoff' in friend4:
+            new_prof['last_online'] = friend4['lastlogoff']
+          if 'profilestate' in friend4:
+            new_prof['profile_state'] = friend4['profilestate']
+          if friend4['communityvisibilitystate'] != 1:
+            if 'realname' in friend4:
+                new_prof['real_name'] = friend4['realname']
+            if 'timecreated' in friend4:
+                new_prof['time_created'] = friend4['timecreated']
+            if 'gameid' in friend4:
+                new_prof['in_game'] = friend4['gameid']
+            if 'gameextrainfo' in friend4:
+                new_prof['in_game_name'] = friend4['gameextrainfo']
+            if 'loccountrycode' in friend4:
+                new_prof['loc_country'] = friend4['loccountrycode']
+            if 'locstatecode' in friend4:
+                new_prof['loc_state'] = friend4['locstatecode']
+            if 'loccityid' in friend4:
+                new_prof['loc_city'] = friend4['loccityid']
+            if 'primaryclanid' in friend4:
+                new_prof['primary_clan'] = friend4['primaryclanid']
+          new_profile = ShortProfile.objects.create(**new_prof)
+          complete_friends.append(new_profile)
+        completeurl = ''
+      serializer = ShortProfileSerializer(complete_friends, many=True)
+      return Response(serializer.data, status=status.HTTP_200_OK)
 
-class ShortProfile(generics.RetrieveUpdateDestroyAPIView):
+class ShortProfiles(generics.ListCreateAPIView):
     queryset = ShortProfile.objects.all()
     serializer_class = ShortProfileSerializer
