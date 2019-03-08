@@ -5,14 +5,15 @@ import classes from './ProfileFriendsItem.module.css';
 class ProfileFriendsItem extends Component {
 
   render() {
-    console.log(this.props.info);
     return (
       <div className={classes.ProfileFriendsItem}>
-        <img src="https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/cc/cce5172c7699199761f3f7b8185fc8d33fa9bcff_medium.jpg" alt="friend pic"/>
-        <div>
-          <span className={classes.Name}>SUPER COOL BEASLEY BOY SEFES ESF ES FESF </span>
+        <div className={classes.ProfileFriendsItemImage}>
+          <img src={this.props.info.avatar_med} alt="friend pic"/>
+        </div>
+        <div className={classes.ProfileFriendsItemInfo}>
+          <span className={classes.Name}>{this.props.info.name}</span>
           <span className={classes.OnlineStatus}>Online</span>
-          <span>{this.props.info.steamid}</span>
+          <span>{this.props.info.id64}</span>
         </div>
       </div>
     );

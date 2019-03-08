@@ -24,14 +24,14 @@ class Game(models.Model):
         return self.name + ' ' + str(id)
 
 class SteamProfile(models.Model):
-    id64 = models.BigIntegerField(primary_key=True)
+    id64 = models.CharField(max_length=500, primary_key=True)
     vanity_url = models.CharField(max_length=500, blank=True)
     steam_url = models.URLField(blank=True, null=True)
     visibility = models.IntegerField(blank=True, null=True)
     name = models.CharField(max_length=500, blank=True)
     real_name = models.CharField(max_length=500, blank=True)
     profile_state = models.IntegerField(blank=True, null=True)
-    primary_clan = models.BigIntegerField(blank=True, null=True)
+    primary_clan = models.CharField(max_length=500, blank=True, null=True)
     loc_country = models.CharField(max_length=10, blank=True, null=True)
     loc_state = models.CharField(max_length=10, blank=True, null=True)
     loc_city = models.IntegerField(blank=True, null=True)
@@ -55,14 +55,14 @@ class TestModel(models.Model):
     name=models.CharField(max_length=500, blank=True)
 
 class ShortProfile(models.Model):
-  id64 = models.BigIntegerField(primary_key=True)
+  id64 = models.CharField(max_length=500, primary_key=True)
   visibility = models.IntegerField(blank=True, null=True)
   profile_state = models.IntegerField(blank=True, null=True)
   name = models.CharField(max_length=500, blank=True)
   real_name = models.CharField(max_length=500, blank=True)
   steam_url = models.URLField(blank=True, null=True)
   status = models.IntegerField(blank=True, null=True)
-  primary_clan = models.BigIntegerField(blank=True, null=True)
+  primary_clan = models.CharField(max_length=500, blank=True, null=True)
   avatar = models.URLField(blank=True, null=True)
   avatar_med = models.URLField(blank=True, null=True)
   avatar_full = models.URLField(blank=True, null=True)
