@@ -9,4 +9,6 @@ urlpatterns = [
     path('api/testmodel/', views.TestList.as_view()),
     path('api/friends/<int:pk>', views.GetFriends.as_view()),
     path('api/shortprofile/', views.ShortProfiles.as_view()),
+    path('api/badges', views.BadgesView.as_view()),
+    path('api/badges/<int:pk>', views.GetBadges.as_view()),
 ]

@@ -76,14 +76,14 @@ class ShortProfile(models.Model):
   last_updated = models.DateTimeField(auto_now_add=True)
 
 class Badges(models.Model):
-  id = models.CharField(max_length=500, primary_key=True)
-  gameid = models.CharField(max_length=500)
+  badgeid = models.CharField(max_length=500, blank=True)
+  gameid = models.CharField(max_length=500, blank=True,)
   image = models.URLField(blank=True, null=True)
   image2 = models.URLField(blank=True, null=True)
   image3 = models.URLField(blank=True, null=True)
   image4 = models.URLField(blank=True, null=True)
   image5 = models.URLField(blank=True, null=True)
   description = models.CharField(max_length=500, blank=True)
-  xp = models.IntegerField(blank=True, null=True)
-  level = models.IntegerField(blank=True, null=True)
+  xp = models.CharField(max_length=500, blank=True)
+  level = models.CharField(max_length=500, blank=True)
   cards = JSONField(blank=True,null=True)

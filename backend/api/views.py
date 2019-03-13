@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from api.models import Game, SteamProfile, TestModel, ShortProfile
-from api.serializers import GameSerializer, SteamProfileSerializer, TestSerializer, ShortProfileSerializer
+from api.models import Game, SteamProfile, TestModel, ShortProfile, Badges
+from api.serializers import GameSerializer, SteamProfileSerializer, TestSerializer, ShortProfileSerializer, BadgeSerializer
 from rest_framework import generics, status
 from rest_framework.response import Response
 
@@ -174,7 +174,24 @@ class GetFriends(generics.RetrieveAPIView):
         completeurl = ''
       serializer = ShortProfileSerializer(complete_friends, many=True)
       return Response(serializer.data, status=status.HTTP_200_OK)
+    else:
+      return Response({'Error': 'No user in the database with that ID'}, status=status.HTTP_404_NOT_FOUND)
 
 class ShortProfiles(generics.ListCreateAPIView):
     queryset = ShortProfile.objects.all()
     serializer_class = ShortProfileSerializer
+
+class BadgesView(generics.ListCreateAPIView):
+  queryset = Badges.objects.all()
+  serializer_class = BadgeSerializer
+
+class GetBadges(generics.RetrieveAPIView):
+  queryset = Badges.objects.all()
+  serializer_class = BadgeSerializer
+  def get(self, request, pk, *args, **kwargs):
+    if SteamProfile.objects.filter(pk=self.kwargs.get('pk')).exists():
+      profile = SteamProfile.objects.get(pk=self.kwargs.get('pk'))
+      badges = profile.badges['badges'].copy()
+      return Response({'Hey': 'Hows it going'}, status=status.HTTP_200_OK)
+    else:
+      return Response({'Error': 'No user in the database with that ID'}, status=status.HTTP_404_NOT_FOUND)
