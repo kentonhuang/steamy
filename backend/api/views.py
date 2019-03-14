@@ -230,7 +230,24 @@ class GetBadges(generics.RetrieveAPIView):
           break
         element.click()
       
+      driver.quit()
+
       for badge in data:
+        anchor = badge.find('a',attrs={"class":"badge_row_overlay"})
+        link = anchor.get('href')
+        badge_info = re.sub('https:\/\/steamcommunity.com\/id\/[a-zA-Z0-9]*\/', '', link).split('/')
+
+        if badge_info[0] == 'badges':
+          if Badges.objects.filter(badgeid=badge_info[1]).exists():
+            existing_badge = Badges.objects.get(badgeid=badge_info[1])
+            badges_data.append(existing_badge)
+            continue
+        if badge_info[0] == 'gamecards':
+          if Badges.objects.filter(gameid=badge_info[1]).exists():
+            existing_game = Badges.objects.get(gameid=badge_info[1])
+            badges_data.append(existing_game)
+            continue
+
         description = badge.find('div',attrs={"class": "badge_info_description"})
         sub_title = description.find('div', attrs={"class": "badge_info_title"}).text.strip()
         
@@ -238,10 +255,6 @@ class GetBadges(generics.RetrieveAPIView):
         level_xp_join = " ".join(level_xp.split()).split(',')
         unlocked = description.find('div', attrs={"class": "badge_info_unlocked"}).text.strip()
 
-        anchor = badge.find('a',attrs={"class":"badge_row_overlay"})
-        link = anchor.get('href')
-
-        badgeid = re.sub('https:\/\/steamcommunity.com\/id\/[a-zA-Z0-9]*\/', '', link).split('/')
         title = badge.find('div',attrs={"class":"badge_title"}).text.strip()
         title_text = " ".join(title.split())
         title_text = title_text.replace('View details', '')
@@ -259,10 +272,10 @@ class GetBadges(generics.RetrieveAPIView):
 
         else:
           keys['xp'] = level_xp_join[0]
-        if badgeid[0] == 'badges':
-          keys['badgeid'] = badgeid[1]
-        if badgeid[0] == 'gamecards':
-          keys['gameid'] = badgeid[1]
+        if badge_info[0] == 'badges':
+          keys['badgeid'] = badge_info[1]
+        if badge_info[0] == 'gamecards':
+          keys['gameid'] = badge_info[1]
         
         if level != '':
           if level == 'Level 1':
@@ -283,11 +296,7 @@ class GetBadges(generics.RetrieveAPIView):
         new_badge = Badges.objects.create(**keys)
         badges_data.append(new_badge)
 
-      driver.quit()
-
       serializer = BadgeSerializer(badges_data, many=True)
       return Response(serializer.data, status=status.HTTP_200_OK)
-
-      return Response({'Hey': 'Hows it going'}, status=status.HTTP_200_OK)
     else:
       return Response({'Error': 'No user in the database with that ID'}, status=status.HTTP_404_NOT_FOUND)
