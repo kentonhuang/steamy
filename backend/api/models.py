@@ -87,3 +87,4 @@ class Badges(models.Model):
   xp = models.CharField(max_length=500, blank=True)
   level = models.CharField(max_length=500, blank=True)
   cards = JSONField(blank=True,null=True)
+  unlocked = models.CharField(max_length=500, blank=True)

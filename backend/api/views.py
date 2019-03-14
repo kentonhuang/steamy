@@ -3,9 +3,15 @@ from api.models import Game, SteamProfile, TestModel, ShortProfile, Badges
 from api.serializers import GameSerializer, SteamProfileSerializer, TestSerializer, ShortProfileSerializer, BadgeSerializer
 from rest_framework import generics, status
 from rest_framework.response import Response
+from bs4 import BeautifulSoup
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
 import requests
 import json
+import time
+import re
 
 # Create your views here.
 class GameListCreate(generics.ListCreateAPIView):
@@ -191,7 +197,97 @@ class GetBadges(generics.RetrieveAPIView):
   def get(self, request, pk, *args, **kwargs):
     if SteamProfile.objects.filter(pk=self.kwargs.get('pk')).exists():
       profile = SteamProfile.objects.get(pk=self.kwargs.get('pk'))
+      url = profile.steam_url + 'badges/'
       badges = profile.badges['badges'].copy()
+      options = Options()
+      options.add_argument("--headless") # Runs Chrome in headless mode.
+      options.add_argument('--no-sandbox') # Bypass OS security model
+      options.add_argument('--disable-gpu')  # applicable to windows os only
+      options.add_argument('start-maximized') # 
+      options.add_argument('disable-infobars')
+      options.add_argument("--disable-extensions")
+
+      capabilities = options.to_capabilities()
+
+      badges_data = []
+      data = []
+      driver = webdriver.Remote("http://selenium-hub:4444/wd/hub", desired_capabilities=capabilities)
+      driver.get(url)
+      while True:
+        driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+        time.sleep(0.1)
+        page_content = BeautifulSoup(driver.page_source, 'html.parser')
+        badges = page_content.findAll('div', {'class': ['badge_row', 'is_link']})
+        for badge in badges:
+          data.append(badge)
+
+        try:
+          element = driver.find_element_by_link_text('>')
+        except:
+          break
+        is_disabled = 'disabled' in element.get_attribute("class")
+        if(is_disabled):
+          break
+        element.click()
+      
+      for badge in data:
+        description = badge.find('div',attrs={"class": "badge_info_description"})
+        sub_title = description.find('div', attrs={"class": "badge_info_title"}).text.strip()
+        
+        level_xp = description.find('div',{"class": None}).text.strip()
+        level_xp_join = " ".join(level_xp.split()).split(',')
+        unlocked = description.find('div', attrs={"class": "badge_info_unlocked"}).text.strip()
+
+        anchor = badge.find('a',attrs={"class":"badge_row_overlay"})
+        link = anchor.get('href')
+
+        badgeid = re.sub('https:\/\/steamcommunity.com\/id\/[a-zA-Z0-9]*\/', '', link).split('/')
+        title = badge.find('div',attrs={"class":"badge_title"}).text.strip()
+        title_text = " ".join(title.split())
+        title_text = title_text.replace('View details', '')
+
+        src = badge.find('img')
+        img = src.get('src')
+
+        level = ''
+        keys = {}
+        keys['unlocked'] = unlocked
+        if(len(level_xp_join) == 2):
+          keys['level'] = level_xp_join[0]
+          keys['xp'] = level_xp_join[1]
+          level = level_xp_join[0]
+
+        else:
+          keys['xp'] = level_xp_join[0]
+        if badgeid[0] == 'badges':
+          keys['badgeid'] = badgeid[1]
+        if badgeid[0] == 'gamecards':
+          keys['gameid'] = badgeid[1]
+        
+        if level != '':
+          if level == 'Level 1':
+            keys['image'] = img
+          elif level == 'Level 2':
+            keys['image2'] = img
+          elif level == 'Level 3':
+            keys['image3'] = img
+          elif level == 'Level 4':
+            keys['image4'] = img
+          elif level == 'Level 5':
+            keys['image5'] = img
+        else:
+          keys['image'] = img
+
+        keys['description'] = title_text
+
+        new_badge = Badges.objects.create(**keys)
+        badges_data.append(new_badge)
+
+      driver.quit()
+
+      serializer = BadgeSerializer(badges_data, many=True)
+      return Response(serializer.data, status=status.HTTP_200_OK)
+
       return Response({'Hey': 'Hows it going'}, status=status.HTTP_200_OK)
     else:
       return Response({'Error': 'No user in the database with that ID'}, status=status.HTTP_404_NOT_FOUND)
