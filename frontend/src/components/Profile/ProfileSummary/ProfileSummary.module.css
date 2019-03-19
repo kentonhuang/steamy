@@ -56,11 +56,3 @@
   align-items: center;
   flex-direction: column;
 }
-
-.ProfileBadges {
-  width: 80%;
-  height: 90%;
-  background-color: #B5ACF9;
-  border-radius: 4px;
-  padding: 1rem;
-}

@@ -1,0 +1,20 @@
+.BadgeItemContainer {
+  display: flex;
+  height: 70px;
+  width: 100%;
+  background-color: #A196F6;
+  border-radius: 5px;
+}
+
+.BadgeItemImage {
+  width: 64px;
+  height: 64px;
+  align-self: center;
+  margin-left: 2px;
+}
+
+.BadgeItemImage>img {
+  border-radius: 5px;
+  height: 100%;
+  object-fit: cover;
+}

@@ -1,0 +1,13 @@
+.ProfileSummaryBadges {
+  padding: 0.5rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto;
+  grid-gap: 0.5rem;
+
+  width: 100%;
+  height: 100%;
+  background-color: #B5ACF9;
+  border-radius: 4px;
+  overflow: auto;
+}

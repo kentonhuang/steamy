@@ -34,10 +34,6 @@
   white-space: nowrap;
 }
 
-.OnlineStatus {
-  display: block;
-}
-
 @-moz-document url-prefix() {
   .ProfileFriendsItem {
     margin-right: 0;
