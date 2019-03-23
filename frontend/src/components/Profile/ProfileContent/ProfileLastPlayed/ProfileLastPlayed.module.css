@@ -1,0 +1,11 @@
+.ProfileLastPlayed {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto;
+  grid-gap: .8rem;
+  height: 250px;
+  background-color: #B5ACF9;
+  border-radius: 5px;
+  overflow: auto;
+  padding: .8rem;
+}

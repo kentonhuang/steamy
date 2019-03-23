@@ -4,6 +4,11 @@
   width: 100%;
   background-color: #A196F6;
   border-radius: 5px;
+  transition: all .15s ease-in;
+}
+
+.BadgeItemContainer:hover {
+  background-color: #988CF4;
 }
 
 .BadgeItemImage {
@@ -17,4 +22,29 @@
   border-radius: 5px;
   height: 100%;
   object-fit: cover;
+}
+
+.BadgeItemInfo {
+  display: flex;
+  justify-content: space-evenly;
+  flex-direction: column;
+  margin-left: 2px;
+  overflow: hidden;
+}
+
+.BadgeItemTitle {
+  font-weight: 700;
+  display: block;
+}
+
+.BadgeItemSubtitle {
+  font-size: 0.8rem;
+}
+
+.BadgeItemXp {
+
+}
+
+.BadgeItemUnlocked {
+
 }

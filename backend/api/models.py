@@ -84,6 +84,7 @@ class Badges(models.Model):
   image4 = models.URLField(blank=True, null=True)
   image5 = models.URLField(blank=True, null=True)
   description = models.CharField(max_length=500, blank=True)
+  subtitle = models.CharField(max_length=500, blank=True)
   xp = models.CharField(max_length=500, blank=True)
   level = models.CharField(max_length=500, blank=True)
   cards = JSONField(blank=True,null=True)

@@ -292,6 +292,7 @@ class GetBadges(generics.RetrieveAPIView):
           keys['image'] = img
 
         keys['description'] = title_text
+        keys['subtitle'] = sub_title
 
         new_badge = Badges.objects.create(**keys)
         badges_data.append(new_badge)

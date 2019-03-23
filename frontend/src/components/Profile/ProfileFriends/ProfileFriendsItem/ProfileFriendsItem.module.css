@@ -5,6 +5,11 @@
   margin-bottom: 4px;
   border-radius: 4px;
   margin-right: 5px; 
+  transition: all .15s ease-in;
+}
+
+.ProfileFriendsItem:hover {
+  background-color: #A196F6;
 }
 
 .ProfileFriendsItemImage {
