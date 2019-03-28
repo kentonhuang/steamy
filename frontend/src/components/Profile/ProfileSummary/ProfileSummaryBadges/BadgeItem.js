@@ -3,12 +3,30 @@ import React, { Component } from 'react';
 import classes from './BadgeItem.module.css'
 
 class BadgeItem extends Component {
+
+  getImage = () => {
+    if(this.props.badgeinfo.badgeid > 0) {
+      console.log(this.props.info.image)
+      return this.props.info.image
+    }
+    else {
+      if(this.props.badgeinfo.appid) {
+        if(this.props.badgeinfo.level > 1) {
+          return this.props.info[`image` + this.props.badgeinfo.level]
+        }
+        else {
+          return this.props.info[`image`]
+        }
+      } 
+    }
+  }
+
   render() {
     console.log(this.props);
     return (
       <div className={classes.BadgeItemContainer}>
         <div className={classes.BadgeItemImage}>
-          <img src="https://steamcommunity-a.akamaihd.net/public/images/badges/01_community/community03_80.png" alt="badge"/>
+          <img src={this.getImage()} alt="badge"/>
         </div>
         <div className={classes.BadgeItemInfo}>
           <div>

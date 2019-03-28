@@ -6,7 +6,7 @@ import classes from './ProfileLastPlayed.module.css'
 class ProfileLastPlayed extends Component {
   render() {
     return (
-      <div class={classes.ProfileLastPlayed}> 
+      <div className={classes.ProfileLastPlayed}> 
         <ProfileLastPlayedItem />
         <ProfileLastPlayedItem />
         <ProfileLastPlayedItem />

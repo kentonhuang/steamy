@@ -7,7 +7,7 @@ export default class SearchBar extends Component {
     return (
         <form className={classes.Form} onSubmit={this.props.submit}>
             <label className={classes.Bar}>
-                <input type="text" name="steamid" value={this.props.value} onChange={this.props.change}/>
+                <input type="text" name="steamid" value={this.props.value} onChange={this.props.change} placeholder="Enter Steam64 ID"/>
             </label>
             <input className={classes.Button} type="submit" value="SEARCH" />
         </form>

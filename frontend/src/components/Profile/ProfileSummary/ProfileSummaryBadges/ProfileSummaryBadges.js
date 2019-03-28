@@ -20,12 +20,25 @@ class ProfileSummaryBadges extends Component {
         this.setState({badges})
         this.setState({loading: false})
       })
+
+    this.props.badges.forEach((element, i) => {
+          if (element.hasOwnProperty('appid')) {
+            this.props.badges[i].badgeid = 0
+          }
+        })
   }
 
   renderItems = () => {
     if(!this.state.loading) {
       let badges = this.state.badges.map((item, i) => {
-        return <BadgeItem key={i} info={item} badgeinfo={this.props.badges}/>
+        let index = 0
+        if(item.gameid === '') {
+          index = this.props.badges.map(e => e.badgeid).indexOf(parseInt(item.badgeid))
+        }
+        else {
+          index = this.props.badges.map(e => e.appid).indexOf(parseInt(item.gameid))
+        }
+        return <BadgeItem key={i} info={item} badgeinfo={this.props.badges[index]}/>
       })
       return badges
     }
