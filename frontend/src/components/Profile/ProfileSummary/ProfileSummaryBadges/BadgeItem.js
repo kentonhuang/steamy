@@ -6,7 +6,6 @@ class BadgeItem extends Component {
 
   getImage = () => {
     if(this.props.badgeinfo.badgeid > 0) {
-      console.log(this.props.info.image)
       return this.props.info.image
     }
     else {
@@ -22,7 +21,6 @@ class BadgeItem extends Component {
   }
 
   render() {
-    console.log(this.props);
     return (
       <div className={classes.BadgeItemContainer}>
         <div className={classes.BadgeItemImage}>

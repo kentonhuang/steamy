@@ -31,8 +31,6 @@ class ProfileFriends extends Component {
   }
 
   render() {
-    console.log(this.state);
-    console.log(this.props);
     return (
       <div className={classes.ProfileFriends}>
         <span>FRIENDS</span>

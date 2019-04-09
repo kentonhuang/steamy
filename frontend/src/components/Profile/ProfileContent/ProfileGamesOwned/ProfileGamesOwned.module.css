@@ -1,4 +1,4 @@
-.ProfileLastPlayed {
+.ProfileGamesOwned {
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: auto;
@@ -8,5 +8,4 @@
   border-radius: 5px;
   overflow: auto;
   padding: .8rem;
-  margin-bottom: 1rem;
 }
