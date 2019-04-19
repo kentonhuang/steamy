@@ -3,6 +3,7 @@
   grid-template-columns: 1fr;
   grid-template-rows: auto;
   grid-gap: .5em;
+  flex-grow: 1;
   height: 250px;
   background-color: #B5ACF9;
   border-radius: 5px;

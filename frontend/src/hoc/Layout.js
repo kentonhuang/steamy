@@ -35,9 +35,9 @@ class Layout extends Component {
             <Route path="/" exact component={() => <SearchPage updateProfile={this.updateProfile} />} />
             <Route path="/profile/:id" component={() => <ProfilePage />} />
         </main>
-        <footer style={{"height": "300px"}}>
+        {/* <footer style={{"height": "300px"}}>
           HELLO
-        </footer>
+        </footer> */}
       </React.Fragment>
     )
   }

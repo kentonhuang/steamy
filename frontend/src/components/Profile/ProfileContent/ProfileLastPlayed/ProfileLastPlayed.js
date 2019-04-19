@@ -6,6 +6,9 @@ import classes from './ProfileLastPlayed.module.css'
 class ProfileLastPlayed extends Component {
 
   mapRecentlyPlayed = () => {
+    // if(this.props.recentGames.total_count === 0) {
+    //   return <div>No Games Played</div>
+    // }
     let games = this.props.recentGames.games.map((game, i) => {
       return <ProfileLastPlayedItem game={game} key={i} />
     })

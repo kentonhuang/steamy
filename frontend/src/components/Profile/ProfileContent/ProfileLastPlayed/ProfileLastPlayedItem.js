@@ -28,8 +28,8 @@ class ProfileLastPlayedItem extends Component {
           <span className={classes.GameTitle}>{this.props.game.name}</span>
         </div>
         <div className={classes.ProfileLastPlayedTime}>
-          <div>Playtime last 2 weeks: {this.playtimeTwoWeeks()}</div>
-          <div>Total Playtime: {Math.floor(this.props.game.playtime_forever / 60)} Hours</div>
+          <div>{this.playtimeTwoWeeks()} logged in 2 weeks</div>
+          <div>{Math.floor(this.props.game.playtime_forever / 60)} total hours played</div>
         </div>
       </div>
     );
