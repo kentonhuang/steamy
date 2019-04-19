@@ -17,7 +17,6 @@ class ProfileGamesOwned extends Component {
     })
     let gamesStr = games.join(',');
     let url = 'http://localhost:8000/api/game/?id=' + gamesStr
-    let result = this.getUrl(url);
     axios.get(url)
       .then(res => {
         let arr = [];
@@ -40,32 +39,30 @@ class ProfileGamesOwned extends Component {
         }
       })
       .then(res => {
-        console.log(res);
+        let promiseArr = res.urls.map(link => axios.get(link))
+        let arr = res.arr;
+        axios.all(promiseArr).then(res => {
+          for(let i = 0; i < res.length; i++) {
+            arr.push(...res[i].data.results)
+          }
+          console.log(arr);
+          this.setState({games: arr})
+          this.setState({loading: false})
+        })
       })
-      
-    // let promiseArr = urls.map(link => 'hey');
-    // console.log(promiseArr);
-    // axios.all(promiseArr)
-    // .then(res => {
-    //   console.log('hey');
-    // }) 
-    // console.log(result);
-  }
-
-  async getUrl(url) {
-    let data = await axios.get(url)
-    return data;
   }
 
   mapGames = () => {
-    let games = this.props.gamesOwned.games.map((game, i) => {
-      return <ProfileGameItem game={game} key={i} />
-    })
-    return games;
+    if (!this.state.loading) {
+      let games = this.state.games.map((game, i) => {
+        const found = this.props.gamesOwned.games.find(ele => ele.appid === game.id);
+        return <ProfileGameItem game={game} key={i} info={found}/>
+      })
+      return games;
+    }
   }
 
   render() {
-    console.log(this.state);
     return (
       <div className={classes.ProfileGamesOwned}>
         {this.mapGames()}
